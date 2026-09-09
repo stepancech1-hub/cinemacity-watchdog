@@ -46,7 +46,7 @@ jobs:
             --title title.txt \
             ${{ inputs.force_report && '--force-report' || '' }}
       - name: Založit issue i při nulové změně
-        if: steps.watch.outputs.has_news != 'true'
+        if: steps.watch.outputs.has_news != 'true' && github.event_name == 'workflow_dispatch'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
