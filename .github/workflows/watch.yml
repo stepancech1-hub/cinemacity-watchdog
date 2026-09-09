@@ -45,14 +45,14 @@ jobs:
             --report report.md \
             --title title.txt \
             ${{ inputs.force_report && '--force-report' || '' }}
-      - name: Založit issue s novými termíny
-        if: steps.watch.outputs.has_news == 'true'
+      - name: Založit issue i při nulové změně
+        if: steps.watch.outputs.has_news != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           url=$(gh issue create \
-            --title "$(cat title.txt)" \
-            --body-file report.md \
+            --title "🤖 Duna: Zatím nic nového" \
+            --body "Stav rozpisu je beze změny. Zkontrolováno: $(date -u '+%Y-%m-%d %H:%M UTC')" \
             --assignee "${{ github.repository_owner }}")
           echo "Založeno: $url"
           gh issue close "$url" --reason completed
